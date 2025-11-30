@@ -2,11 +2,14 @@ package middlewares
 
 import (
 	"bytes"
+	"context"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/throskam/ki"
 )
 
 func TestRecovererMiddleware(t *testing.T) {
@@ -19,10 +22,14 @@ func TestRecovererMiddleware(t *testing.T) {
 		panic("something went wrong")
 	})
 
-	middleware := Recoverer(logger)
+	middleware := Recoverer()
 	handler := middleware(panicHandler)
 
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
+
+	ctx := ki.SetLogger(context.Background(), logger)
+	req = req.WithContext(ctx)
+
 	rec := httptest.NewRecorder()
 
 	handler.ServeHTTP(rec, req)
