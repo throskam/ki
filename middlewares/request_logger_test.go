@@ -52,11 +52,19 @@ func TestRequestLogger(t *testing.T) {
 	if !strings.Contains(logOutput, `path="/hello?world=true"`) {
 		t.Errorf("expected log to contain correct path")
 	}
+	if !strings.Contains(logOutput, `remote=127.0.0.1:5555`) {
+		t.Errorf("expected log to contain correct remote")
+	}
 	if !strings.Contains(logOutput, `status=200`) {
 		t.Errorf("expected log to contain status=200")
+	}
+	if !strings.Contains(logOutput, `size=`) {
+		t.Errorf("expected log to contain size")
+	}
+	if !strings.Contains(logOutput, `duration=`) {
+		t.Errorf("expected log to contain duration")
 	}
 	if !strings.Contains(logOutput, `requestID=test-id-123`) {
 		t.Errorf("expected log to contain correct requestID")
 	}
 }
-
