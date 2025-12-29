@@ -17,15 +17,12 @@ go get -u github.com/throskam/ki
 - Groups
 - Named routes
 
-## Examples
-
-Very simple example:
+## Usage
 
 ```go
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/throskam/ki"
@@ -35,15 +32,23 @@ import (
 func main() {
 	router := ki.NewRouter()
 
-	router.Use(middlewares.Logger())
+	router.Use(middlewares.RequestID())
+	router.Use(middlewares.RealIP())
+	router.Use(middlewares.RequestLogger())
+	router.Use(middlewares.Recoverer())
 
-	router.Get("/{$}", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("hello world"))
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("Hello, World!"))
 	})
 
 	_ = http.ListenAndServe(":8080", router)
 }
 
+
 ```
 
-see [examples](./examples) for more complex examples.
+see [examples](./examples) for examples.
+
+## License
+
+MIT
